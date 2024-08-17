@@ -22,6 +22,7 @@ export class UserServiceImpl implements UserService {
       throw new NotFoundError(`user ${id} not found`,
       )
     }
+    return found
   }
 
   async create(data: Omit<User, "id">) {

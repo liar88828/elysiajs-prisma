@@ -2,7 +2,7 @@ import { Elysia } from "elysia"
 import { userController } from "./controller/user"
 import { productController } from "./controller/product"
 
-const app = new Elysia()
+export const app = new Elysia()
   .get("/hello", () => "Hello Elysia")
   .group("/api", app =>
     app

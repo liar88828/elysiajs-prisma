@@ -4,14 +4,19 @@ import { CreateEden } from "elysia"
 
 export class ProductService {
   async find() {
+    console.log('hello')
     return prisma.product.findMany({ take: 100 })
   }
   async findId(id: number) {
-    return prisma.product.findUnique({ where: { id } })
+    const res = await prisma.product.findUnique({ where: { id } })
+    if (!res) {
+      throw new Error(`product ${id} not found`)
+    }
+    return res
   }
   async create(data: ProductPrisma<"create">) {
     const { id } = data
-    return prisma.product.create({
+    const res = await prisma.product.create({
       data: {
         exp: data.exp,
         name: data.name,
@@ -20,9 +25,11 @@ export class ProductService {
         ...(id ? { id } : {}),
       },
     })
+    console.log(res)
+    return res
   }
   async update(id: number, data: ProductPrisma<"update">) {
-    return prisma.product.update({
+    const res = await prisma.product.update({
       where: { id },
       data: {
         exp: data.exp,
@@ -31,6 +38,10 @@ export class ProductService {
         qty: data.qty,
       },
     })
+    if (!res) {
+      throw new Error(`product ${id} not found`)
+    }
+    return res
   }
 
   async delete(id: number) {
