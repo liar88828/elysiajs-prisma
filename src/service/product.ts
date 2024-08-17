@@ -1,5 +1,6 @@
-import { Product } from "@prisma/client"
+import { Prisma, Product } from "@prisma/client"
 import { prisma } from "../config/db"
+import { CreateEden } from "elysia"
 
 export class ProductService {
   async find() {
@@ -8,7 +9,7 @@ export class ProductService {
   async findId(id: number) {
     return prisma.product.findUnique({ where: { id } })
   }
-  async create(data: Product) {
+  async create(data: ProductPrisma<"create">) {
     const { id } = data
     return prisma.product.create({
       data: {
@@ -20,7 +21,7 @@ export class ProductService {
       },
     })
   }
-  async update(id: number, data: Product) {
+  async update(id: number, data: ProductPrisma<"update">) {
     return prisma.product.update({
       where: { id },
       data: {
@@ -38,3 +39,8 @@ export class ProductService {
     })
   }
 }
+
+type ProductPrisma<T extends "create" | "update"> = Prisma.Args<
+  typeof prisma.product,
+  T
+>["data"]
