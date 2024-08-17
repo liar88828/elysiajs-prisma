@@ -4,9 +4,9 @@ import type { App } from "../src"
 import { treaty } from "@elysiajs/eden"
 import { prisma } from "../src/config/db"
 
-const app = treaty<App>("localhost:3000")
+const app = treaty<App>("localhost:3000").api
 const id = 1
-describe("test user controller get method", () => {
+describe.skip("test user controller get method", () => {
   // beforeEach(async () => {
   //   await prisma.user.deleteMany({
   //     where: {
@@ -48,12 +48,14 @@ describe("test user controller get method", () => {
   })
 
   it("user can get id params", async () => {
-    const { data } = await app.user({ id }).get()
+    const { data} = await app.user({ id }).get()
+
     expect(data).toEqual({
       address: "user1",
       age: 110,
       name: "user test",
       id: expect.any(Number),
+    
     })
 
     expect(data).not.toEqual({

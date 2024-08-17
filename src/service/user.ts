@@ -1,5 +1,6 @@
 import { User } from "@prisma/client"
 import { prisma } from "../config/db"
+import { NotFoundError } from "elysia"
 
 export interface UserService {
   test(): string
@@ -14,9 +15,14 @@ export class UserServiceImpl implements UserService {
     return prisma.user.findMany({ take: 100 })
   }
   async findId(id: number) {
-    return prisma.user.findUnique({
+    const found = await prisma.user.findUnique({
       where: { id },
     })
+    if (!found) {
+      throw new NotFoundError(`user ${id} not found`,
+      )
+    }
+    return found
   }
 
   async create(data: Omit<User, "id">) {
