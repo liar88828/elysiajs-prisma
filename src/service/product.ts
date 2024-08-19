@@ -3,19 +3,19 @@ import { ProductPrisma } from "../interface/product.type"
 
 export class ProductService {
 	async find() {
-		return prisma.product.findMany({ take: 100 })
+		return prisma.productDB.findMany({ take: 100 })
 	}
-
+	
 	async findId(id: number) {
-		const res = await prisma.product.findUnique({ where: { id } })
+		const res = await prisma.productDB.findUnique({ where: { id } })
 		if (!res) {
-			throw new Error(`product ${id} not found`)
+			throw new Error(`product ${ id } not found`)
 		}
 		return res
 	}
-
+	
 	async create({ id, ...data }: ProductPrisma<"create">) {
-		return prisma.product.create({
+		return prisma.productDB.create({
 			data: {
 				exp: data.exp,
 				name: data.name,
@@ -24,11 +24,11 @@ export class ProductService {
 				...(id ? { id } : {}),
 			},
 		})
-
+		
 	}
-
+	
 	async update(id: number, data: ProductPrisma<"update">) {
-		const res = await prisma.product.update({
+		const res = await prisma.productDB.update({
 			where: { id },
 			data: {
 				exp: data.exp,
@@ -38,13 +38,13 @@ export class ProductService {
 			},
 		})
 		if (!res) {
-			throw new Error(`product ${id} not found`)
+			throw new Error(`product ${ id } not found`)
 		}
 		return res
 	}
-
+	
 	async delete(id: number) {
-		return prisma.product.delete({
+		return prisma.productDB.delete({
 			where: { id },
 		})
 	}
