@@ -1,0 +1,6 @@
+export enum Status {
+	CONFIRM = "CONFIRM",
+	PENDING = "PENDING",
+	SUCCESS = "SUCCESS",
+	FAILED = "FAILED"
+}
