@@ -10,32 +10,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id      Int    @id @default(autoincrement())
-  name    String
-  age     Int
-  address String
+model UserDB {
+  id          Int             @id @default(autoincrement())
+  name        String
+  age         Int
+  address     String
+  Transaction TransactionDB[]
+  Product     ProductDB[]
 }
 
-model Product {
+model ProductDB {
   id    Int      @id @default(autoincrement())
   name  String
   price Int
   qty   Int
   exp   DateTime
+
+  User        UserDB?         @relation(fields: [userId], references: [id])
+  userId      Int?
+  Transaction TransactionDB[]
 }
 
-model Transaction {
-  id       Int      @id @default(autoincrement())
-  name     String
-  qty      Int
-  total    Int
-  status   Status   @relation(fields: [statusId], references: [id])
-  create   DateTime
-  statusId String
+model TransactionDB {
+  id     Int      @id @default(autoincrement())
+  // name     String
+  qty    Int
+  total  Int
+  create DateTime @default(now())
+
+  statusId  String
+  status    Status     @relation(fields: [statusId], references: [id])
+  user      UserDB?    @relation(fields: [userId], references: [id])
+  userId    Int?
+  Product   ProductDB? @relation(fields: [productId], references: [id])
+  productId Int?
 }
 
 model Status {
-  id          String        @id @default("PENDING")
-  Transaction Transaction[]
+  id          String          @id @default("PENDING")
+  Transaction TransactionDB[]
 }
