@@ -1,0 +1,33 @@
+@api = http://localhost:3000
+@path = {{api}}/api/post
+@token = eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyMkBnbWFpbC5jb20iLCJuYW1lIjoiVXNlciAyIiwiZXhwIjoxNzI0MDgwOTA2fQ._Awvk0gj52aLCRAuMgeFxZtnXxqgd7pXzSAnkGjbvmM
+###
+GET  {{api}}/hello
+Content-Type: application/json
+
+###
+GET  {{path}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+GET  {{path}}/user
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+GET  {{path}}/10
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+POST  {{path}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "msg": "is message test",
+  "title": "not have title",
+  "userId": 3333
+}
