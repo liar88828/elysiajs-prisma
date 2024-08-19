@@ -6,21 +6,21 @@ export interface UserService {
 }
 
 export class UserServiceImpl implements UserService {
-	
+
 	async find() {
 		return prisma.userDB.findMany({ take: 100 })
 	}
-	
+
 	async findId(id: number) {
 		const found = await prisma.userDB.findUnique({
 			where: { id },
 		})
 		if (!found) {
-			throw new NotFoundError(`user ${ id } not found`,)
+			throw new NotFoundError(`user ${id} not found`,)
 		}
 		return found
 	}
-	
+
 	async create(data: Omit<UserDB, "id">) {
 		return prisma.userDB.create({
 			data: {
@@ -30,7 +30,7 @@ export class UserServiceImpl implements UserService {
 			},
 		})
 	}
-	
+
 	async update(id: number, data: Omit<UserDB, "id">) {
 		return prisma.userDB.update({
 			where: { id },
@@ -41,7 +41,7 @@ export class UserServiceImpl implements UserService {
 			},
 		})
 	}
-	
+
 	async delete(id: number) {
 		return prisma.userDB.delete({
 			where: { id },

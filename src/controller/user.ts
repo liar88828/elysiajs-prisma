@@ -19,7 +19,7 @@ export const userController = new Elysia({
 			},
 		},
 	})
-	
+
 	.get("/", async ({ serviceUser }) => {
 		return serviceUser.find()
 	})
@@ -27,7 +27,7 @@ export const userController = new Elysia({
 		"/:id",
 		async ({ serviceUser, valid, params: { id } }) => {
 			// valid.checkId(id)
-			console.log(`test ${ id }`)
+			console.log(`test ${id}`)
 			return serviceUser.findId(id)
 		},
 		{ params: "user.id" }

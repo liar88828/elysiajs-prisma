@@ -13,13 +13,13 @@ export const transactionController = new Elysia({
 		return serviceTransaction.find();
 	})
 	.get("/:id", async ({ serviceTransaction, params: { id } }) => {
-			return serviceTransaction.findOne(id);
-		},
+		return serviceTransaction.findOne(id);
+	},
 		{ params: "transaction.id" })
 	.post(
 		'/checkout', async ({ serviceTransaction, body }) => {
 			return serviceTransaction.checkout(body)
 		}, {
-			body: "transaction.base"
-		}
+		body: "transaction.base"
+	}
 	)

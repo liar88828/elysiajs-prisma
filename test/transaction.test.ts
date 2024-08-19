@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from "bun:test";
 import { app } from "../src";
 import { prisma } from "../src/config/db";
 import API from "./utils/myApi";
-import { TYCheckout } from "../src/interface/transaction.type";
+import { TCheckout } from "../src/interface/transaction.type";
 import { Status } from "../src/interface/Status";
 
 describe('can test transaction controller', async () => {
@@ -16,7 +16,7 @@ describe('can test transaction controller', async () => {
 		expect(response).toBe('Hello Elysia')
 		expect(response).not.toBe('hi Elysia')
 	})
-	
+
 	beforeAll(async () => {
 		await prisma.$transaction(async (tx) => {
 			const user = await tx.userDB.create({
@@ -27,7 +27,7 @@ describe('can test transaction controller', async () => {
 					age: 20,
 				}
 			})
-			
+
 			const product = await tx.productDB.create({
 				data: {
 					id: 32,
@@ -37,7 +37,7 @@ describe('can test transaction controller', async () => {
 					userId: user.id,
 				}
 			})
-			
+
 			const status = await tx.statusDB.createMany({
 				data: [
 					{ id: Status.CONFIRM },
@@ -59,18 +59,18 @@ describe('can test transaction controller', async () => {
 			console.log('before finish')
 		})
 	})
-	
+
 	afterAll(async () => {
 		await prisma.productDB.deleteMany()
 		await prisma.userDB.deleteMany()
 		await prisma.transactionDB.deleteMany()
 		await prisma.statusDB.deleteMany()
-		
+
 	})
-	
+
 	describe('can Create POST Transaction', async () => {
 		it("POST can create Transaction ", async () => {
-			
+
 			const data = {
 				qty: "error",
 				id: "Error",
@@ -79,7 +79,7 @@ describe('can test transaction controller', async () => {
 				total: "error",
 				status: "error",
 			}
-			
+
 			const response = await app
 				.handle(new API('transaction/checkout').POST(data))
 				.then((res) => res.json())
@@ -101,9 +101,9 @@ describe('can test transaction controller', async () => {
 				}
 			)
 		})
-		
+
 		it("Error POST can't wrong  data create Transaction ", async () => {
-			const data: Partial<TYCheckout> = {
+			const data: Partial<TCheckout> = {
 				qty: 10,
 				id: 33,
 				userId: 31,
@@ -111,7 +111,7 @@ describe('can test transaction controller', async () => {
 				total: 200_000,
 				status: Status.CONFIRM,
 			}
-			
+
 			const response = await app
 				.handle(new API('transaction/checkout').POST(data))
 				.then((res) => res.json())
@@ -133,9 +133,9 @@ describe('can test transaction controller', async () => {
 				}
 			)
 		})
-		
+
 	})
-	
+
 	describe("can get all data transaction", async () => {
 		it("Get All From transaction", async () => {
 			const response = await app
@@ -148,7 +148,7 @@ describe('can test transaction controller', async () => {
 			expect(response[0]).toContainKey("productId")
 			expect(response[0]).toContainKey("total")
 		})
-		
+
 		it("GET id From transaction", async () => {
 			const response = await app
 				.handle(new API('transaction/33').GET())
@@ -171,7 +171,7 @@ describe('can test transaction controller', async () => {
 				}
 			)
 		})
-		
+
 		it("Error wrong id GET id From transaction", async () => {
 			const response = await app
 				.handle(new API('transaction/error').GET())
@@ -189,15 +189,15 @@ describe('can test transaction controller', async () => {
 					create: expect.any(String),
 				}
 			)
-			
+
 		})
-		
+
 	})
-	
+
 	// not have create controller
 	describe.skip("can UPDATE Transaction", async () => {
 		it("PUT can create Transaction ", async () => {
-			
+
 			const data = {
 				qty: "error",
 				id: "Error",
@@ -206,7 +206,7 @@ describe('can test transaction controller', async () => {
 				total: "error",
 				status: "error",
 			}
-			
+
 			const response = await app
 				.handle(new API('transaction/checkout').POST(data))
 				.then((res) => res.json())
@@ -228,9 +228,9 @@ describe('can test transaction controller', async () => {
 				}
 			)
 		})
-		
+
 		it("Error PUT can't wrong  data create Transaction ", async () => {
-			const data: Partial<TYCheckout> = {
+			const data: Partial<TCheckout> = {
 				qty: 10,
 				id: 33,
 				userId: 31,
@@ -238,7 +238,7 @@ describe('can test transaction controller', async () => {
 				total: 200_000,
 				status: Status.CONFIRM,
 			}
-			
+
 			const response = await app
 				.handle(new API('transaction/checkout').POST(data))
 				.then((res) => res.json())
@@ -260,7 +260,7 @@ describe('can test transaction controller', async () => {
 				}
 			)
 		})
-		
+
 	})
-	
+
 })
