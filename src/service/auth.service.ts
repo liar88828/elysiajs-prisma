@@ -2,6 +2,7 @@ import { prisma } from "../config/db";
 
 import { LoginModel, RegisterModel } from "../model/auth";
 import { TokenService } from "./token.service";
+import { NotFoundError } from "elysia";
 
 export class AuthService extends TokenService {
 	confPass(data: RegisterModel) {
@@ -34,6 +35,7 @@ export class AuthService extends TokenService {
 				age: user.age,
 				name: user.name,
 				email: user.email,
+				otp: 0,
 				password: hashPassword,
 				refreshTokens: 'not have token ',
 			}
@@ -85,6 +87,44 @@ export class AuthService extends TokenService {
 		const regenerateRefreshToken = await this.hashToken(newRefreshToken)
 		const { password, refreshTokens, ...res } = await this.updateRefreshToken(email, regenerateRefreshToken)
 		return res
+	}
+	
+	setOtp(): number {
+		const otp = Math.random() * 1_000_000_000
+		const toFix = otp.toFixed().slice(0, 6)
+		return Number(toFix)
+	}
+	
+	async sendOtp(id: number) {
+		const otp = this.setOtp()
+		const user = await prisma.userDB.update(
+			{
+				where: { id },
+				data: { otp: Number(otp) }
+			})
+		
+		if (!user) {
+			throw new NotFoundError('User Not found')
+		}
+		return otp
+	}
+	
+	async validOtp(id: number, otp: number) {
+		const res = await prisma.userDB.findUnique({ where: { id } })
+		if (!res) {
+			throw new NotFoundError('User is Not Found')
+		} else if (res.otp !== otp || otp === 0) {
+			throw new NotFoundError('User Otp is Not Match')
+		} else if (res.otp === otp || otp !== 0) {
+			await prisma.userDB.update(
+				{
+					where: { id },
+					data: { otp: this.setOtp() }
+				})
+			return true
+		} else {
+			return false
+		}
 	}
 }
 

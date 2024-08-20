@@ -6,6 +6,10 @@ GET  {{path}}/test
 Content-Type: application/json
 
 ###
+GET http://localhost:3000/api/user
+Content-Type: application/json
+
+###
 POST  {{path}}/refresh
 Content-Type: application/json
 
@@ -76,7 +80,22 @@ Content-Type: application/json
 }
 
 ###
+
 DELETE  {{path}}/logout
 Content-Type: application/json
+
+###
+
+GET  {{path}}/otp/1
+Content-Type: application/json
+
+###
+
+POST  {{path}}/otp/1
+Content-Type: application/json
+
+{
+  "otp": 243739
+}
 
 ###

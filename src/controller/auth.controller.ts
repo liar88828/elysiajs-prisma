@@ -1,4 +1,4 @@
-import Elysia from "elysia";
+import Elysia, { t } from "elysia";
 import { JwtToken } from "../middleware/auth/JwtToken";
 import { randomUUID } from "crypto";
 import { cookie } from '@elysiajs/cookie';
@@ -137,11 +137,25 @@ export const authController = new Elysia(
 		}
 	)
 	.delete('/logout', async ({ cookie }) => {
-		
 		cookie.refresh_token.remove()
-		
-		// delete cookie.refresh_token
 		return "see you again"
 	}, {
 		cookie: 'auth.refreshToken'
 	})
+	
+	.get('/otp/:id', async ({ authService, params: { id } }) => {
+			const otp = await authService.sendOtp(id)
+			return { data: otp }
+		},
+		{
+			params: t.Object({ id: t.Number() }),
+		}
+	)
+	.post('/otp/:id', async ({ body: { otp }, params: { id }, authService }) => {
+			return authService.validOtp(id, otp)
+		},
+		{
+			params: t.Object({ id: t.Number() }),
+			body: t.Object({ otp: t.Number() })
+		}
+	)

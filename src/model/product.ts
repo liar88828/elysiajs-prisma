@@ -9,6 +9,7 @@ const productBase = t.Object({
 	qty: t.Number(),
 	exp: t.Date(),
 });
+
 export const modelProduct = new Elysia({ name: "Model.Product" })
 	.model({
 		"product.id": t.Object({ id: t.Number() }),

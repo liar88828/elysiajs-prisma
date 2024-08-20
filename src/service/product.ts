@@ -1,5 +1,6 @@
 import { prisma } from "../config/db"
 import { TProductBase } from "../model/product";
+import { NotFoundError } from "elysia";
 
 export class ProductService {
 	async find() {
@@ -28,6 +29,7 @@ export class ProductService {
 	}
 	
 	async update(id: number, data: TProductBase) {
+		
 		const res = await prisma.productDB.update({
 			where: { id },
 			data: {
@@ -44,9 +46,13 @@ export class ProductService {
 	}
 	
 	async delete(id: number) {
-		return prisma.productDB.delete({
+		const res = await prisma.productDB.delete({
 			where: { id },
 		})
+		if (!res) {
+			throw new NotFoundError('product ${ id } not found')
+		}
+		return res
 	}
 }
 

@@ -1,27 +1,17 @@
 @api = http://localhost:3000
-@path = {{api}}/api/post
+@path = {{api}}/api/product
 @token = eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJ1c2VyMkBnbWFpbC5jb20iLCJuYW1lIjoiVXNlciAyIiwiZXhwIjoxNzI0MTQ2NDM0fQ.AeUglzzPpW-D6MNDJEe2Utp_omyExe2Egxrbd_TmCxM
 ###
 GET  {{api}}/hello
 Content-Type: application/json
 
 ###
-GET  {{path}}/all
+GET  {{path}}
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ###
-GET  {{path}}/all/1
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-###
-GET  {{path}}/user
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-###
-GET  {{path}}/user/1
+GET  {{path}}/10
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -32,7 +22,26 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "msg": "is message test",
-  "title": "not have title",
-  "userId": 3333
+  "name": "not have title",
+  "price": {{$randomInt}},
+  "qty":  {{$randomInt}},
+  "exp": "{{$isoTimestamp}}"
 }
+
+###
+
+PUT  {{path}}/7
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "update data",
+  "price": {{$random.integer(0,100)}},
+  "qty":  {{$randomInt}},
+  "exp": "{{$isoTimestamp}}"
+}
+
+###
+DELETE  {{path}}/6
+Content-Type: application/json
+Authorization: Bearer {{token}}

@@ -20,6 +20,9 @@ model UserDB {
   Transaction   TransactionDB[]
   Product       ProductDB[]
   refreshTokens String
+  otp    Int     @default(0)
+  active Boolean @default(false)
+  valid  Boolean @default(false)
   Post          PostDB[]
 }
 

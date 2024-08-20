@@ -6,7 +6,7 @@ export const accessToken = new Elysia({ name: 'Plugin.accessToken' })
 		jwt({
 			name: "accessToken",
 			secret: Bun.env.ACCESS_TOKEN || "access_token",
-			exp: '5m',
+			exp: '20m',
 			schema: t.Object({
 				id: t.Number(),
 				email: t.String(),

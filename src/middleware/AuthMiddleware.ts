@@ -7,8 +7,8 @@ export const AuthMiddleware = (app: Elysia) => app
 	.derive(
 		async function handler({ accessToken, cookie, set, request: { headers }, }) {
 			
-			console.log(headers)
-			console.log(cookie);
+			// console.log(headers)
+			// console.log(cookie);
 			
 			const authorization = headers.get("Authorization");
 			if (!authorization) {
