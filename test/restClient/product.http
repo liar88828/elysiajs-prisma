@@ -23,7 +23,7 @@ Authorization: Bearer {{token}}
 
 {
   "name": "not have title",
-  "price": {{$randomInt}},
+  "price": {{$randomInt 1 23}},
   "qty":  {{$randomInt}},
   "exp": "{{$isoTimestamp}}"
 }

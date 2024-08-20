@@ -3,7 +3,7 @@ import { Elysia, Static, t } from "elysia";
 const postCreate = t.Object({
 	msg: t.String(),
 	title: t.String(),
-	userId: t.Number(),
+	// userId: t.Number(),
 });
 
 export type PostCreate = Static<typeof postCreate>
