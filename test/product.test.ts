@@ -16,7 +16,7 @@ describe('can test product controller', async () => {
 		expect(response).toBe('Hello Elysia')
 		expect(response).not.toBe('hi Elysia')
 	})
-	
+
 	beforeAll(async () => {
 		console.log("running test.")
 	})
@@ -24,7 +24,7 @@ describe('can test product controller', async () => {
 		console.log("done with test.")
 		await prisma.productDB.deleteMany()
 	})
-	
+
 	describe('can test product POST controller', async () => {
 		it("can create Product ", async () => {
 			const data: Partial<ProductDB> = {
@@ -34,7 +34,7 @@ describe('can test product controller', async () => {
 				qty: 10,
 				id: 10
 			}
-			
+
 			const response = await app
 				// .handle(new Request('http://localhost:3000/api/product', {
 				//     headers: { 'Content-Type': 'application/json' },
@@ -57,15 +57,15 @@ describe('can test product controller', async () => {
 					qty: 10,
 					id: 10,
 					userId: null// expect.anything()
-					
+
 				}
 			)
 		})
 	})
-	
+
 	describe('can test product GET controller', async () => {
 		// const app = new Elysia().get('/hello', () => 'hi')
-		
+
 		it.skip("can get All Product", async () => {
 			const response = await app
 				.handle(new API('product').GET())
@@ -73,7 +73,7 @@ describe('can test product controller', async () => {
 			// console.log(response)
 			expect(response).toBeArray()
 		})
-		
+
 		it("can get by id Product", async () => {
 			const response = await app
 				// .handle(new Request('http://localhost:3000/api/product/1', { }))
@@ -92,7 +92,7 @@ describe('can test product controller', async () => {
 				}
 			)
 		})
-		
+
 		it("can get id Product", async () => {
 			const response = await app
 				// .handle(new Request('http://localhost:3000/api/product/1', { }))
@@ -112,7 +112,7 @@ describe('can test product controller', async () => {
 				}
 			)
 		})
-		
+
 		it("can get id Product", async () => {
 			const response = await app
 				// .handle(new Request('http://localhost:3000/api/product/1', { }))
@@ -131,9 +131,9 @@ describe('can test product controller', async () => {
 				}
 			)
 		})
-		
+
 	})
-	
+
 	describe('can test product PUT controller', async () => {
 		it('can update Product', async () => {
 			const data: Partial<ProductDB> = {
@@ -147,8 +147,8 @@ describe('can test product controller', async () => {
 				.handle(new API('product')
 					//@ts-ignore
 					.PUT(data.id, data)).then(
-					res => res.json()
-				)
+						res => res.json()
+					)
 			// console.log(response)
 			expect(response).toBeObject()
 			expect(response).toEqual({
@@ -158,9 +158,9 @@ describe('can test product controller', async () => {
 				qty: 10,
 				exp: expect.any(String)// the actually is date
 				, userId: null//expect.anything()
-				
+
 			})
-			
+
 		})
 	})
 	describe('can test product DELETE controller', async () => {
@@ -180,7 +180,7 @@ describe('can test product controller', async () => {
 				exp: expect.any(String),// the actually is date
 				userId: null//expect.anything()
 			})
-			
+
 		})
 		it("can't  because after delete data Product", async () => {
 			const response = await app

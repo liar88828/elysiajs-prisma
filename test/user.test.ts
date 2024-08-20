@@ -3,6 +3,7 @@ import { afterAll, beforeAll, describe, expect, it } from "bun:test"
 import type { App } from "../src"
 import { treaty } from "@elysiajs/eden"
 import { prisma } from "../src/config/db"
+import { UserDB } from "@prisma/client";
 
 const app = treaty<App>("localhost:3000").api
 const id = 1
@@ -11,7 +12,15 @@ describe("test user controller get method", () => {
 	beforeAll(async () => {
 		console.log("running test.")
 		await prisma.userDB.create({
-			data: { address: "user1", age: 110, name: "user test", id: 1 },
+			data: { 
+				address: "user1",
+				age: 110,
+				name: "user test", id: 1,
+				otp: 1234,
+				email: "",
+				password: "",
+				refreshTokens: "",
+			},
 		})
 	})
 	
@@ -21,19 +30,34 @@ describe("test user controller get method", () => {
 	})
 	
 	it("user can create params ", async () => {
-		const { data } = await app.user.index.post({
+		
+		const sendData: UserDB = {
 			address: "user1",
 			age: 110,
 			name: "user test",
 			id: 1,
-		})
+			email: "",
+			password: "",
+			refreshTokens: "",
+			otp: 1234,
+			active: false,
+			valid: false
+		}
+		const { data } = await app.user.index.post(sendData)
 		
-		expect(data).toEqual({
-			address: "user1",
-			age: 110,
-			name: "user test",
+		const test: UserDB = {
+			address: "user1 updated",
+			age: 700,
+			name: "user updated",
 			id: expect.any(Number),
-		})
+			otp: 1234,
+			active: true,
+			valid: true,
+			email: "",
+			password: "",
+			refreshTokens: ""
+		}
+		expect(data).toEqual(test)
 		expect(data).not.toBeArray()
 		expect(data).toBeObject()
 	})
@@ -52,6 +76,12 @@ describe("test user controller get method", () => {
 			age: 110,
 			name: "user test",
 			id: expect.any(Number),
+			otp: 1234,
+			active: true,
+			valid: true,
+			email: "",
+			password: "",
+			refreshTokens: "",
 			
 		})
 		
@@ -80,28 +110,49 @@ describe("test user controller get method", () => {
 	})
 	
 	it("user can update params all ", async () => {
-		const { data } = await app.user({ id }).put({
+		const sendData: UserDB = {
 			address: "user1 updated",
 			age: 700,
 			name: "user updated",
 			id: 1,
-		})
+			email: "",
+			password: "",
+			refreshTokens: "",
+			otp: 1234,
+			active: false,
+			valid: false
+		}
+		
+		const { data } = await app.user({ id }).put(sendData)
 		
 		expect(data).toEqual({
 			address: "user1 updated",
 			age: 700,
 			name: "user updated",
 			id: expect.any(Number),
+			active: true,
+			valid: true,
+			email: "",
+			password: "",
+			refreshTokens: "",
+			otp: 1234,
 		})
 		expect(data).not.toBeArray()
 		expect(data).toBeObject()
 		
-		const { data: data2 } = await app.user({ id: 123 }).put({
+		const testError: UserDB = {
 			address: "user1 updated",
 			age: 700,
 			name: "user updated",
 			id: 1,
-		})
+			active: true,
+			valid: true,
+			email: "",
+			password: "",
+			refreshTokens: "",
+			otp: 1234,
+		}
+		const { data: data2 } = await app.user({ id: 123 }).put(testError)
 		expect(data2).not.toBeArray()
 		expect(data2).not.toBeObject()
 	})
@@ -113,6 +164,12 @@ describe("test user controller get method", () => {
 			age: 700,
 			name: "user updated",
 			id: expect.any(Number),
+			active: true,
+			valid: true,
+			email: "",
+			password: "",
+			refreshTokens: "",
+			otp: 1234,
 		})
 		
 		expect(data).not.toEqual({
@@ -129,12 +186,19 @@ describe("test user controller get method", () => {
 	// Delete data
 	it("user can delete params all ", async () => {
 		const { data } = await app.user({ id }).delete()
-		expect(data).toEqual({
+		const test: UserDB = {
 			address: "user1 updated",
 			age: 700,
 			name: "user updated",
 			id: expect.any(Number),
-		})
+			otp: 1234,
+			active: true,
+			valid: true,
+			email: "",
+			password: "",
+			refreshTokens: ""
+		}
+		expect(data).toEqual(test)
 		expect(data).not.toBeArray()
 		expect(data).toBeObject()
 	})

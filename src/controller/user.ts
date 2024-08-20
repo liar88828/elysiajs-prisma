@@ -37,7 +37,7 @@ export const userController = new Elysia({
 		async ({ serviceUser, body }) => {
 			return serviceUser.create(body)
 		},
-		{ body: "user.base" }
+		{ body: "user.create" }
 	)
 	.put(
 		"/:id",
@@ -46,7 +46,7 @@ export const userController = new Elysia({
 		},
 		{
 			params: "user.id",
-			body: "user.base",
+			body: "user.update",
 		}
 	)
 	.delete(

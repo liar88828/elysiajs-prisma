@@ -2,8 +2,9 @@ import { afterAll, beforeAll, describe, expect, it } from "bun:test";
 import { app } from "../src";
 import { prisma } from "../src/config/db";
 import API from "./utils/myApi";
-import { TYCheckout } from "../src/interface/transaction.type";
+import { TCheckout } from "../src/interface/transaction.type";
 import { Status } from "../src/interface/Status";
+import { UserDB } from "@prisma/client";
 
 describe('can test transaction controller', async () => {
 	it("can connect api transaction", async () => {
@@ -19,14 +20,19 @@ describe('can test transaction controller', async () => {
 	
 	beforeAll(async () => {
 		await prisma.$transaction(async (tx) => {
-			const user = await tx.userDB.create({
-				data: {
-					id: 31,
-					name: "User 1",
-					address: "Indonesia",
-					age: 20,
-				}
-			})
+			const testData: UserDB = {
+				id: 31,
+				name: "User 1",
+				address: "Indonesia",
+				age: 20,
+				email: "",
+				password: "",
+				refreshTokens: "",
+				otp: 0,
+				active: false,
+				valid: false
+			}
+			const user = await tx.userDB.create({ data: testData })
 			
 			const product = await tx.productDB.create({
 				data: {
@@ -103,7 +109,7 @@ describe('can test transaction controller', async () => {
 		})
 		
 		it("Error POST can't wrong  data create Transaction ", async () => {
-			const data: Partial<TYCheckout> = {
+			const data: Partial<TCheckout> = {
 				qty: 10,
 				id: 33,
 				userId: 31,
@@ -230,7 +236,7 @@ describe('can test transaction controller', async () => {
 		})
 		
 		it("Error PUT can't wrong  data create Transaction ", async () => {
-			const data: Partial<TYCheckout> = {
+			const data: Partial<TCheckout> = {
 				qty: 10,
 				id: 33,
 				userId: 31,
