@@ -24,7 +24,7 @@ Content-Type: application/json
 
 ###
 
-POST  {{path}}//register
+POST  {{path}}/register
 Content-Type: application/json
 
 {
