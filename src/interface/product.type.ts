@@ -1,8 +1,24 @@
-import { Prisma } from "@prisma/client";
-import { Args } from "@prisma/client/runtime/library";
-import { prisma } from "../config/db";
+import { ProductDB } from "@prisma/client";
+import { TProductBase } from "../model/product";
 
+export type TProduct = Omit<ProductDB, 'id'> & {
+	id?: number;
+}
 
-export type ProductPrisma<T extends "create" | "update"> = Prisma.Args<
-  typeof prisma.product, T
->["data"]
+const test: TProduct = {
+	id: 1 ? undefined : 0,
+	userId: 1 ? null : 0,
+	name: "Product Test",
+	qty: 123,
+	price: 1234,
+	exp: new Date()
+}
+
+const test2: TProductBase = {
+	id: 1 ? undefined : 0,
+	userId: 1 ? undefined : 0,
+	name: "Product Test",
+	qty: 123,
+	price: 1234,
+	exp: new Date()
+}

@@ -11,12 +11,19 @@ datasource db {
 }
 
 model UserDB {
-  id          Int             @id @default(autoincrement())
-  name        String
-  age         Int
-  address     String
-  Transaction TransactionDB[]
-  Product     ProductDB[]
+  id            Int             @id @default(autoincrement())
+  name          String
+  age           Int
+  address       String
+  email         String          @unique
+  password      String
+  Transaction   TransactionDB[]
+  Product       ProductDB[]
+  refreshTokens String
+  otp    Int     @default(0)
+  active Boolean @default(false)
+  valid  Boolean @default(false)
+  Post          PostDB[]
 }
 
 model ProductDB {
@@ -24,7 +31,7 @@ model ProductDB {
   name  String
   price Int
   qty   Int
-  exp   DateTime
+  exp   DateTime @default(now())
 
   User        UserDB?         @relation(fields: [userId], references: [id])
   userId      Int?
@@ -39,14 +46,31 @@ model TransactionDB {
   create DateTime @default(now())
 
   statusId  String
-  status    Status     @relation(fields: [statusId], references: [id])
+  status    StatusDB   @relation(fields: [statusId], references: [id])
   user      UserDB?    @relation(fields: [userId], references: [id])
   userId    Int?
   Product   ProductDB? @relation(fields: [productId], references: [id])
   productId Int?
 }
 
-model Status {
+// model RefreshToken {
+//   id          String   @id @unique @default(uuid())
+//   hashedToken String
+//   userId      Int
+//   User        UserDB   @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   revoked     Boolean  @default(false)
+//   createdAt   DateTime @default(now())
+// }
+
+model StatusDB {
   id          String          @id @default("PENDING")
   Transaction TransactionDB[]
+}
+
+model PostDB {
+  id     Int     @id @default(autoincrement())
+  title  String
+  msg    String
+  UserDB UserDB? @relation(fields: [userId], references: [id])
+  userId Int?
 }

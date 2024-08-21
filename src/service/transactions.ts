@@ -1,7 +1,7 @@
 import { prisma } from "../config/db";
 import { NotFoundError } from "elysia";
 import { Status } from "../interface/Status";
-import { TYCheckout } from "../interface/transaction.type";
+import { TCheckout } from "../interface/transaction.type";
 
 export class TransactionService {
 	async find() {
@@ -16,14 +16,16 @@ export class TransactionService {
 		return res
 	}
 
-	async checkout(data: TYCheckout) {
+	async checkout({ id, ...data }: TCheckout) {
 		return prisma.transactionDB.create({
 			data: {
 				qty: data.qty,
 				total: data.total,
 				userId: data.userId,
-				productId: data.userId,
-				statusId: Status.PENDING,
+				productId: data.productId,
+				statusId: data.status ?? Status.PENDING,
+				...(id ? { id } : {}),
+
 			}
 		})
 	}
