@@ -1,4 +1,4 @@
-import type { ApiPath, HandlerType } from "../../src/interface/api.type";
+import type { ApiPath, HandlerType } from "../../src/interface/api.type"
 
 export default class API {
   constructor(private to: ApiPath) {}
@@ -9,62 +9,62 @@ export default class API {
         to: this.to,
         method: "GET",
         token,
-      });
+      })
     } else {
       return new Handler().handler({
         id: id,
         to: this.to,
         method: "GET",
         token,
-      });
+      })
     }
   }
 
-  POST(data: Object, token: string = "", to = "") {
+  POST(data: Object, token: string = "", to = "", id: number | string='') {
     if (to === "") {
       return new Handler().handler({
         data,
-        to: this.to,
+        to: this.to + id,
         method: "POST",
         token,
-      });
+      })
     }
     return new Handler().handler({
       data,
       to: this.to + to,
       method: "POST",
       token,
-    });
+    })
   }
 
-  PUT(id: number, data: Object, token: string) {
+  PUT(id: number | string, data: Object, token: string) {
     return new Handler().handler({
       data,
       id,
       to: this.to,
       method: "PUT",
       token,
-    });
+    })
   }
 
-  DELETE(id: number, token: string) {
+  DELETE(id: number | string, token: string) {
     return new Handler().handler({
       id,
       to: this.to,
       method: "DELETE",
       token,
-    });
+    })
   }
 }
 
 class Handler {
   handler({ method = "GET", to, id = "", data, token }: HandlerType) {
-    let option: RequestInit = {};
+    let option: RequestInit = {}
 
     if (["POST", "PUT"].includes(method)) {
       option = {
         body: JSON.stringify(data),
-      };
+      }
     }
 
     // console.log(option)
@@ -75,6 +75,6 @@ class Handler {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    });
+    })
   }
 }
