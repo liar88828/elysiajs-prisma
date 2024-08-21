@@ -1,6 +1,5 @@
-import { Elysia } from "elysia"
-import { jwtToken } from "../plugin/jetToken"
-import { prisma } from "../config/db"
+import { Elysia } from "elysia";
+import { jwtToken } from "../plugin/jetToken";
 
 export const AuthMiddleware = (app: Elysia) =>
   app

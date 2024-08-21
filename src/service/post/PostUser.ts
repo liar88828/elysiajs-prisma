@@ -1,8 +1,9 @@
-import { prisma } from "../config/db";
-import { PostCreate } from "../model/post.model";
 import { NotFoundError } from "elysia";
+import { prisma } from "../../config/db";
+import type { PostCreate } from "../../model/post.model";
 
-class PostUser {
+
+export class PostUser {
   async findUser(idUser: number) {
     return prisma.postDB.findMany({
       where: { userId: idUser },
@@ -41,19 +42,5 @@ class PostUser {
     return prisma.postDB.delete({
       where: { id, userId },
     });
-  }
-}
-
-export class PostService extends PostUser {
-  async findAll() {
-    return prisma.postDB.findMany({ take: 100 });
-  }
-
-  async findId(id: number) {
-    const res = await prisma.postDB.findUnique({ where: { id } });
-    if (!res) {
-      throw new NotFoundError("Post does not exist");
-    }
-    return res;
   }
 }

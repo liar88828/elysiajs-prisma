@@ -276,7 +276,7 @@ describe.skipIf(SKIP)("can test product User Comment controller", async () => {
       expect(response).toEqual(dataExpect)
     })
 
-    it.skip("Error can test product DELETE Comment id not found ", async () => {
+    it("Error can test product DELETE Comment id not found ", async () => {
       const post = await prisma.postDB.findFirst()
       const id = idProduct(10, post?.id)
       const response = await app

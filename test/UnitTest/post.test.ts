@@ -39,15 +39,7 @@ describe.skipIf(SKIP)("can test post controller", async () => {
       expect(response).toContainKey("userId")
       expect(response).toContainKey("rating")
       expect(response).toContainKey("productDBId")
-      // const test = {
-      //   msg: "test post",
-      //   title: "test post",
-      //   id: expect.any(Number),
-      //   userId: expect.any(Number),
-      //   rating: expect.any(Number),
-      //   productDBId: expect.any(Number),
-      // }
-      // expect(response).toEqual(test)
+    
     })
   })
 })

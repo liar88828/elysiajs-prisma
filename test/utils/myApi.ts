@@ -20,7 +20,7 @@ export default class API {
     }
   }
 
-  POST(data: Object, token: string = "", to = "", id: number | string='') {
+  POST(data: Object, token: string = "", to = "", id: number | string = "") {
     if (to === "") {
       return new Handler().handler({
         data,

@@ -1,22 +1,22 @@
-import { Elysia } from "elysia";
-import { PostService } from "../service/post.service";
-import { postModel } from "../model/post.model";
-import { AuthMiddleware } from "../middleware/AuthMiddleware";
+import { Elysia } from "elysia"
+import { postModel } from "../model/post.model"
+import { AuthMiddleware } from "../middleware/AuthMiddleware"
+import { PostService } from "../service/post/post.service"
 
 export const authMacro = new Elysia({ name: "plugin.admin" }).macro(
   ({ onBeforeHandle }) => ({
     isRole(role: "ADMIN" | "USER") {
       onBeforeHandle(({ error, cookie }) => {
         if (role === "ADMIN") {
-          console.log("is admin");
+          console.log("is admin")
         } else if (role === "USER") {
-          console.log("is not admin");
+          console.log("is not admin")
         }
         // throw error("Unauthorized", " is Admin Only");
-      });
+      })
     },
   })
-);
+)
 
 export const postController = new Elysia({
   name: "Controller.Post",
@@ -32,12 +32,12 @@ export const postController = new Elysia({
   .group("/all", (app) =>
     app
       .get("/", async ({ postService }) => {
-        return postService.findAll();
+        return postService.findAll()
       })
       .get(
         "/:id",
         async ({ postService, params }) => {
-          return postService.findId(params.id);
+          return postService.findId(params.id)
         },
         { params: "post.id" }
       )
@@ -45,12 +45,12 @@ export const postController = new Elysia({
   .group("/user", (app) =>
     app
       .get("/", async ({ postService, payload }) => {
-        return postService.findUser(payload.id);
+        return postService.findUser(payload.id)
       })
       .get(
         "/:id",
         async ({ postService, params, payload }) => {
-          return postService.findIdUser(params.id, payload.id);
+          return postService.findIdUser(params.id, payload.id)
         },
         { params: "post.id" }
       )
@@ -59,8 +59,8 @@ export const postController = new Elysia({
   .post(
     "/",
     async ({ postService, body, payload }) => {
-      const res = await postService.createUser(body, payload.id);
-      return res;
+      const res = await postService.createUser(body, payload.id)
+      return res
     },
     {
       body: "post.create",
@@ -70,16 +70,16 @@ export const postController = new Elysia({
   .put(
     "/:id",
     async ({ postService, params, body, payload }) => {
-      const res = await postService.updateUser(body, params.id, payload.id);
+      const res = await postService.updateUser(body, params.id, payload.id)
     },
     { params: "post.id" }
   )
   .delete(
     "/:id",
     async ({ postService, params: { id }, payload }) => {
-      return postService.deleteUser(id, payload.id);
+      return postService.deleteUser(id, payload.id)
     },
     {
       params: "post.id",
     }
-  );
+  )

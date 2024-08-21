@@ -31,7 +31,7 @@ describe.skipIf(SKIP)("test user controller get method", () => {
   })
 
   describe("can test user POST controller", async () => {
-    it.skip("user can create params ", async () => {
+    it("user can create params ", async () => {
       const expectData: UserDB = {
         id: expect.any(Number),
         address: "user1",
