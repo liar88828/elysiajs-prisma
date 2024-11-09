@@ -5,4 +5,4 @@ export const idProduct = (
   return `${idProduct}/${idPost}`
 }
 
-export const SKIP = false
+export const SKIP = true
