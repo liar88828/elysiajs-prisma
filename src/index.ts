@@ -1,15 +1,21 @@
 import { Elysia } from "elysia"
 import { userController } from "./controller/user"
 import { transactionController } from "./controller/transaction.controller"
-import { productController } from "./controller/product"
+import { productController } from "./controller/product/product"
+import { authController } from "./controller/auth.controller"
+import { postController } from "./controller/post.controller"
+import { myError } from "./plugin/myError"
 
 export const app = new Elysia()
-  .get("/hello", () => "Hello Elysia")
-  .group("/api", app =>
+  .use(myError)
+  .get("/hello", () => "Hello Elysia", {})
+  .group("/api", (app) =>
     app
+      .use(authController)
       .use(userController)
       .use(productController)
       .use(transactionController)
+      .use(postController)
   )
   .listen(3000)
 

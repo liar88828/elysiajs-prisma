@@ -1,0 +1,101 @@
+@api = http://localhost:3000
+@path = {{api}}/api/auth
+
+###
+GET  {{path}}/test
+Content-Type: application/json
+
+###
+GET http://localhost:3000/api/user
+Content-Type: application/json
+
+###
+POST  {{path}}/refresh
+Content-Type: application/json
+
+###
+POST  {{path}}/login
+Content-Type: application/json
+
+{
+  "email": "user2@gmail.com",
+  "password": "12345678"
+}
+
+###
+
+POST  {{path}}/register
+Content-Type: application/json
+
+{
+  "email": "user2@gmail.com",
+  "name": "User 2",
+  "age": 200,
+  "address": "indonesia",
+  "password": "12345678",
+  "confPass": "12345678"
+}
+
+### email is not valid
+
+POST  {{path}}//register
+Content-Type: application/json
+
+{
+  "email": "user1",
+  "name": "User 1",
+  "age": 200,
+  "address": "indonesia",
+  "password": "12345678",
+  "confPass": "12345678"
+}
+
+
+### password is not complete
+
+POST  {{path}}//register
+Content-Type: application/json
+
+{
+  "email": "user1@gmail.com",
+  "name": "User 1",
+  "age": 200,
+  "address": "indonesia",
+  "password": "1234567",
+  "confPass": "12345678"
+}
+
+### password are not match
+
+POST  {{path}}//register
+Content-Type: application/json
+
+{
+  "email": "user1@gmail.com",
+  "name": "User 1",
+  "age": 200,
+  "address": "indonesia",
+  "password": "12345678",
+  "confPass": "123456"
+}
+
+###
+
+DELETE  {{path}}/logout
+Content-Type: application/json
+
+###
+
+GET  {{path}}/otp/1
+Content-Type: application/json
+
+###
+
+POST  {{path}}/otp/1
+Content-Type: application/json
+
+{
+  "otp": 243739
+}
+
+###
